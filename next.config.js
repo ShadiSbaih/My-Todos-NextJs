@@ -1,8 +1,7 @@
 /** @type {import('next').NextConfig} */
 const config = {
-  experimental: {
-    serverActions: true,
-  },
+  // serverActions is no longer experimental in Next.js 15
+  // so we can remove this configuration
 };
 
 module.exports = config;

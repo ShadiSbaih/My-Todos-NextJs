@@ -28,15 +28,17 @@ import {updateTodoAction } from "../../actions/todo.actions";
 import { Checkbox } from "./ui/checkbox";
 import { useState } from "react";
 import Spinner from "./Spinner";
-import { ITodo } from "../../interfaces";
+import { ITodo } from "../interfaces";
+
 export default function EditTodoForm({todo}: {todo: ITodo}) {
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     
-    const defaultValues: Partial<TodoFormValues> = {
+    const defaultValues: TodoFormValues = {
         title: todo.title,
-        body: todo.body as string,
-        completed: todo.completed,
+        body: todo.body || "",
+        completed: todo.completed || false,
+        userId: todo.user_Id
     };
 
     const form = useForm<TodoFormValues>({
@@ -47,10 +49,20 @@ export default function EditTodoForm({todo}: {todo: ITodo}) {
 
     const onSubmit = async (data: TodoFormValues) => {
         setLoading(true);
-        //Todo update action
-         await updateTodoAction({id:todo.id as string,title:data.title,body:data.body as string,completed:data.completed as any,userId:todo.userId});
-        setLoading(false);
-        setOpen(false);
+        try {
+            await updateTodoAction({
+                id: todo.id as string,
+                title: data.title,
+                body: data.body,
+                completed: !!data.completed,
+                user_Id: todo.user_Id
+            });
+            setLoading(false);
+            setOpen(false);
+        } catch (error) {
+            console.error("Failed to update todo:", error);
+            setLoading(false);
+        }
     };
 
 
@@ -98,6 +110,7 @@ export default function EditTodoForm({todo}: {todo: ITodo}) {
                                                 placeholder="Tell us a little bit about Task"
                                                 className="resize-none"
                                                 {...field}
+                                                value={field.value || ""}
                                             />
                                         </FormControl>
                                         <FormDescription>
@@ -115,7 +128,7 @@ export default function EditTodoForm({todo}: {todo: ITodo}) {
                                     <FormItem className="flex  items-start flex-col space-y-2">
                                         <div className="flex space-x-3">    <FormLabel>Completed</FormLabel>
                                             <FormControl>
-                                                <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                                                <Checkbox checked={!!field.value} onCheckedChange={field.onChange} />
                                             </FormControl></div>
                                         <FormDescription>
                                             Mark this task as completed.
@@ -124,8 +137,14 @@ export default function EditTodoForm({todo}: {todo: ITodo}) {
                                     </FormItem>
                                 )}
                             />
-                            <DialogFooter>
-                                <Button variant={"outline"} type="submit">{loading ? <Spinner /> : ""}Save changes</Button>
+                            <DialogFooter className="space-x-2">
+                                <Button variant="outline" type="button" onClick={() => setOpen(false)}>
+                                    Cancel
+                                </Button>
+                                <Button type="submit" disabled={loading}>
+                                    {loading ? <Spinner className="mr-2" /> : null}
+                                    Save changes
+                                </Button>
                             </DialogFooter>
                         </form>
                     </Form>

@@ -13,7 +13,7 @@ model Todo {
     slug      String  @unique
     body      String?
     completed Boolean  @default(false)
-    userId    String
+    user_Id   String  
     createdAt DateTime @default(now())
 }
 

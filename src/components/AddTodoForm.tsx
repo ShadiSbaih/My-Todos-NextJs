@@ -28,13 +28,16 @@ import { createTodoAction } from "../../actions/todo.actions";
 import { Checkbox } from "./ui/checkbox";
 import { useState } from "react";
 import Spinner from "./Spinner";
-export default function AddTodoForm() {
+export default function AddTodoForm({userId}: {userId: string|null}) {
+
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const defaultValues: Partial<TodoFormValues> = {
-    title: "default title.",
-    body: "default body.",
+
+  const defaultValues: TodoFormValues = {
+    title: "",
+    body: "",
     completed: false,
+    userId: userId || undefined
   };
 
   const form = useForm<TodoFormValues>({
@@ -43,11 +46,27 @@ export default function AddTodoForm() {
     mode: "onChange",
   });
 
-  const onSubmit = async ({ title, body, completed }: TodoFormValues) => {
+  const onSubmit = async (data: TodoFormValues) => {
+    if (!userId) {
+      console.error("User ID is required");
+      return;
+    }
+    
     setLoading(true);
-    await createTodoAction({ title, body, completed });
-    setLoading(false);
-    setOpen(false);
+    try {
+      await createTodoAction({ 
+        title: data.title, 
+        body: data.body || "", 
+        completed: !!data.completed,
+        userId: userId 
+      });
+      setLoading(false);
+      setOpen(false);
+      form.reset(defaultValues);
+    } catch (error) {
+      console.error("Failed to create todo:", error);
+      setLoading(false);
+    }
   };
 
 
@@ -96,6 +115,7 @@ export default function AddTodoForm() {
                         placeholder="Tell us a little bit about Task"
                         className="resize-none"
                         {...field}
+                        value={field.value || ""}
                       />
                     </FormControl>
                     <FormDescription>
@@ -122,8 +142,13 @@ export default function AddTodoForm() {
                   </FormItem>
                 )}
               />
-              <DialogFooter>
-                <Button variant={"outline"} type="submit">{loading ? <Spinner /> : ""}Save changes</Button>
+              <DialogFooter className="space-x-2">
+                <Button type="button" variant="outline" onClick={() => setOpen(false)}>
+                  Cancel
+                </Button>
+                <Button type="submit">
+                  {loading ? <Spinner /> : "Save changes"}
+                </Button>
               </DialogFooter>
             </form>
           </Form>
