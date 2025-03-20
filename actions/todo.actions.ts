@@ -2,7 +2,7 @@
 import { PrismaClient } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { ITodo } from "../interfaces";
-
+import {faker} from "@faker-js/faker";
 const prisma = new PrismaClient();
 
 export const getTodoListAction = async () => {
@@ -36,7 +36,7 @@ export const createTodoAction = async ({
       body: body,
       slug: slug,
       completed: completed,
-     user_id: "1",
+      userId: faker.number.bigInt({ min: 1, max: 100 }).toString(),
     },
   });
   revalidatePath("/");

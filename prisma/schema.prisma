@@ -10,10 +10,10 @@ generator client {
 model Todo {
     id        String   @id @default(auto()) @map("_id") @db.ObjectId
     title     String
-    slug      String?  @unique
+    slug      String  @unique
     body      String?
     completed Boolean  @default(false)
-    userId   String
+    userId    String
     createdAt DateTime @default(now())
 }
 

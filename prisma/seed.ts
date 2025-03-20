@@ -29,6 +29,8 @@ async function main() {
         title: title,
         body: faker.lorem.words(25),
         slug: slug,
+        userId:faker.number.bigInt({ min: 1, max: 100 }).toString(),
+        completed: faker.datatype.boolean(),
       };
     }),
   });
