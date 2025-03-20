@@ -1,0 +1,41 @@
+datasource db {
+    provider = "mongodb"
+    url      = env("DATABASE_URL")
+}
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+model Todo {
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    title     String
+    slug      String?  @unique
+    body      String?
+    completed Boolean  @default(false)
+    userId   String
+    createdAt DateTime @default(now())
+}
+
+// model User {
+//     id      String   @id @default(auto()) @map("_id") @db.ObjectId
+//     email   String
+//     name    String
+//     address Address?
+//     posts   Post[]
+// }
+
+// type Address {
+//     city    String
+//     country String
+//     zip     String
+// }
+
+// model Post {
+//     id       String @id @default(auto()) @map("_id") @db.ObjectId
+//     slug     String @unique
+//     title    String
+//     body     String
+//     author   User   @relation(fields: [authorID], references: [id])
+//     authorID String @db.ObjectId
+// }
