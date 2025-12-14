@@ -1,5 +1,24 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+## 🚀 Quick Deploy to Vercel
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/ShadiSbaih/My-Todos-NextJs)
+
+### Prerequisites
+- MongoDB Atlas account (free tier available)
+- Clerk account for authentication (free tier available)
+- Vercel account (free tier available)
+
+### One-Click Deployment
+1. Click the "Deploy with Vercel" button above
+2. Add required environment variables (see `.env.example`)
+3. Deploy!
+
+### Manual Deployment
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed instructions.
+
+---
+
 ## Getting Started
 
 First, run the development server:
