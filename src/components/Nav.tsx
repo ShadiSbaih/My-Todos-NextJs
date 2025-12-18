@@ -1,5 +1,6 @@
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import { ModeToggle } from "./ModeToggle";
+import { Button } from "./ui/button";
 
 export default function Nav() {
     return (
@@ -13,7 +14,9 @@ export default function Nav() {
                     <UserButton />
                 </SignedIn>
                 <SignedOut>
-                    <SignInButton />
+                    <SignInButton mode="modal">
+                        <Button variant="outline">Sign In</Button>
+                    </SignInButton>
                 </SignedOut>
             </div>
         </nav>
