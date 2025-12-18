@@ -111,10 +111,10 @@ export default function AddTodoForm() {
                 name="completed"
                 render={({ field }) => (
                   <FormItem className="flex  items-start flex-col space-y-2">
-                <div className="flex space-x-3">    <FormLabel>Completed</FormLabel>
-                    <FormControl>
-                      <Checkbox checked={field.value} onCheckedChange={field.onChange} />
-                    </FormControl></div>
+                    <div className="flex space-x-3">    <FormLabel>Completed</FormLabel>
+                      <FormControl>
+                        <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                      </FormControl></div>
                     <FormDescription>
                       Mark this task as completed.
                     </FormDescription>

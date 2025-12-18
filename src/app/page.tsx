@@ -4,9 +4,9 @@ import AddTodoForm from "@/components/AddTodoForm";
 import { TodoTable } from "@/components/TodoTable";
 import { getTodoListAction } from "../../actions/todo.actions";
 
-export default  async function Home() {
-   const todos = await getTodoListAction();
- 
+export default async function Home() {
+  const todos = await getTodoListAction();
+
   return (
     <main className="container mx-auto p-4">
       {/* <pre>{JSON.stringify(todos, undefined, 2)}</pre> */}
@@ -17,7 +17,7 @@ export default  async function Home() {
       )) 
       } */}
       <AddTodoForm />
-      <TodoTable todos={todos}/>
+      <TodoTable todos={todos} />
     </main>
   );
 }

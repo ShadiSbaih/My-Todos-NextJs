@@ -33,7 +33,7 @@ export function TodoTable({ todos }: { todos: ITodo[] }) {
                         <TableCell>{todo.title}</TableCell>
                         <TableCell>{todo.completed ? <Badge variant="completed">Complete</Badge> : <Badge variant="secondary">Uncompleted</Badge>}</TableCell>
                         <TableCell >
-                          <TodoTableButtons todo={todo} />
+                            <TodoTableButtons todo={todo} />
                         </TableCell>
                     </TableRow>
                 ))}
