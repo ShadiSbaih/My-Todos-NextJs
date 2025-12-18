@@ -2,13 +2,22 @@
 import { PrismaClient } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { ITodo } from "../interfaces";
-import { faker } from "@faker-js/faker";
+import { auth } from "@clerk/nextjs/server";
 
 const prisma = new PrismaClient();
 
 export const getTodoListAction = async () => {
+  const { userId } = await auth();
+
+  if (!userId) {
+    return [];
+  }
+
   try {
     return await prisma.todo.findMany({
+      where: {
+        userId,
+      },
       orderBy: {
         createdAt: "desc",
       },
@@ -29,6 +38,12 @@ export const createTodoAction = async ({
   body: string | undefined;
   completed: boolean | undefined;
 }) => {
+  const { userId } = await auth();
+
+  if (!userId) {
+    throw new Error("Unauthorized");
+  }
+
   const slug = title.toLowerCase().replace(/ /g, "-");
 
   await prisma.todo.create({
@@ -37,7 +52,7 @@ export const createTodoAction = async ({
       body: body,
       slug: slug,
       completed: completed,
-      userId: faker.number.bigInt({ min: 1, max: 100 }).toString(),
+      userId: userId,
     },
   });
   revalidatePath("/");
@@ -45,9 +60,16 @@ export const createTodoAction = async ({
 };
 
 export const updateTodoAction = async ({ id, title, body, completed }: ITodo) => {
-  await prisma.todo.update({
+  const { userId } = await auth();
+
+  if (!userId) {
+    throw new Error("Unauthorized");
+  }
+
+  await prisma.todo.updateMany({
     where: {
       id,
+      userId,
     },
     data: {
       title,
@@ -56,13 +78,19 @@ export const updateTodoAction = async ({ id, title, body, completed }: ITodo) =>
     },
   });
   revalidatePath("/");
-
 };
 
 export const deleteTodoAction = async ({ id }: { id: string }) => {
-  await prisma.todo.delete({
+  const { userId } = await auth();
+
+  if (!userId) {
+    throw new Error("Unauthorized");
+  }
+
+  await prisma.todo.deleteMany({
     where: {
-      id
+      id,
+      userId,
     },
   });
   revalidatePath("/");
