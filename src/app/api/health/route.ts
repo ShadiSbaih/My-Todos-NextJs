@@ -7,7 +7,7 @@ export async function GET() {
   try {
     // Check database connection by performing a simple query
     await prisma.todo.findFirst();
-    
+
     return NextResponse.json({
       status: 'healthy',
       timestamp: new Date().toISOString(),

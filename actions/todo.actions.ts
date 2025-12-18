@@ -2,7 +2,7 @@
 import { PrismaClient } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { ITodo } from "../interfaces";
-import {faker} from "@faker-js/faker";
+import { faker } from "@faker-js/faker";
 
 const prisma = new PrismaClient();
 

@@ -24,12 +24,12 @@ async function main() {
   await prisma.todo.createMany({
     data: Array.from({ length: 25 }, () => {
       const title = faker.book.title();
-      const slug = `${title.toLowerCase().replace(/ /g, "-")}-${uuidv4()}`; 
+      const slug = `${title.toLowerCase().replace(/ /g, "-")}-${uuidv4()}`;
       return {
         title: title,
         body: faker.lorem.words(25),
         slug: slug,
-        userId:faker.number.bigInt({ min: 1, max: 100 }).toString(),
+        userId: faker.number.bigInt({ min: 1, max: 100 }).toString(),
         completed: faker.datatype.boolean(),
       };
     }),
