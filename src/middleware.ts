@@ -13,3 +13,12 @@ export default clerkMiddleware(async (auth, req) => {
     await auth.protect()  // fix: await instead of return
   }
 })
+
+export const config = {
+  matcher: [
+    // Skip Next.js internals and all static files, unless found in search params
+    '/((?!.*\\..*|_next).*)',
+    '/',
+    '/(api|trpc)(.*)',
+  ],
+}
